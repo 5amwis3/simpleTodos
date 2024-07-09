@@ -1,3 +1,4 @@
+const config = require("./lib/config");
 const express = require("express");
 const morgan = require("morgan");
 const flash = require("express-flash");
@@ -8,9 +9,10 @@ const SessionPersistence = require("./lib/session-persistence");
 const PgPersistence = require("./lib/pg-persistence");
 const catchError = require("./lib/catch-error");
 
+
 const app = express();
-const host = "localhost";
-const port = 3000;
+const host = config.HOST;
+const port = config.PORT;
 const LokiStore = store(session);
 
 app.set("views", "./views");
@@ -22,14 +24,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(session({
   cookie: {
     httpOnly: true,
-    maxAge: 31 * 24 * 60 * 60 * 1000, // 31 days in millseconds
+    maxAge: 6 * 1000, // 31 days in millseconds
     path: "/",
     secure: false,
   },
   name: "launch-school-todos-session-id",
   resave: false,
   saveUninitialized: true,
-  secret: "this is not very secure",
+  secret: config.SECRET,
   store: new LokiStore({}),
 }));
 
@@ -75,8 +77,6 @@ app.get("/lists",
       countDoneTodos: todoList.todos.filter(todo => todo.done).length,
       isDone: store.isDoneTodoList(todoList),
     }));
-
-    console.log(todoLists, todosInfo);
 
     res.render("lists", {
       todoLists,

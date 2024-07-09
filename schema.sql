@@ -4,7 +4,7 @@ CREATE TABLE todolists (
   username text 
     NOT NULL    
     REFERENCES users (username)
-    ON DELETE CASCADE,
+    ON DELETE CASCADE
 );
 
 CREATE TABLE todos (
