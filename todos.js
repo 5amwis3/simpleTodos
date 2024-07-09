@@ -24,7 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(session({
   cookie: {
     httpOnly: true,
-    maxAge: 6 * 1000, // 31 days in millseconds
+    maxAge: 31 * 24 * 60 * 60 * 1000, // 31 days in millseconds
     path: "/",
     secure: false,
   },
